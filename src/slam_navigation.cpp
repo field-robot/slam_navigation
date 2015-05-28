@@ -4,6 +4,7 @@
 #include <move_base_msgs/MoveBaseActionFeedback.h>
 #include <std_msgs/Float32.h>
 #include <nav_msgs/OccupancyGrid.h>
+#include <nav_msgs/Odometry.h>
 
 #define searchDistance 11.4
 #define horizontalSearch 20
@@ -46,21 +47,21 @@ void ticksRight( const std_msgs::Float32& ticks1)
   
 }
 
-void odomMsgs(const nav_msgs::Odemetry& odom)						//callback function for the position of the robot
+void odomMsgs(const nav_msgs::Odometry& odom)						//callback function for the position of the robot
 {
-	x = odom.pose.pose.point.position.x;	
-	y = odom.pose.pose.point.position.y;	
-	w = odom.pose.pose.point.orientation.w;
+	x = odom.pose.pose.position.x;	
+	y = odom.pose.pose.position.y;	
+	w = odom.pose.pose.orientation.w;
 }
 
 void costmap_grid(const nav_msgs::OccupancyGrid &costmap)
 {
 	int k;
-	for(int i = 0;i<costmap.map.info.width;i++)
+	for(int i = 0;i<costmap.info.width;i++)
 		{
-			for(int j = 0;j<costmap.map.info.height; j++)
+			for(int j = 0;j<costmap.info.height; j++)
 			{
-			gridmap[i][j] = costmap.map.data[k];
+			gridmap[i][j] = costmap.data[k];
 			k++ ;
 			}
 		}	
