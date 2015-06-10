@@ -20,7 +20,7 @@ double goal_y;
 double goal_w;
 double Pos1;
 double Pos2;
-double distancecovered;							//distance covered per row
+double distancecovered;																		//distance covered per row
 double dt;
 
 
