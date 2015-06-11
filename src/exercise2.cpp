@@ -188,3 +188,28 @@ al_w+0.1)
       
   }
 }
+
+
+bool findObstacle()
+{
+	int numberOccupiedCells = 0;
+	for (int i = 30-0.5*horizontalSearch; i <horizontalSearch+30; i++)
+		{
+			for(int j = 30-0.5*verticalSearch; j<verticalSearch+30; j++)
+			{
+				if(gridmap[i][j] > 0)
+				{
+						numberOccupiedCells++;
+				}
+			}
+		}
+	if (numberOccupiedCells>200)
+	return true;
+}
+
+
+
+
+	
+
+	
