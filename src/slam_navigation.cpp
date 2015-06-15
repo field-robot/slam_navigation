@@ -139,8 +139,7 @@ int main(int argc, char** argv){
 		{
 			if (y == goal_y-0.1|y == goal_y+0.1)
 			{
-				if (w == goal_w-0.1 | w == go
-al_w+0.1)
+				if (w == goal_w-0.1 | w == goal_w+0.1)
 				{
 					searchingRow = false;
 					distancecovered = 0;

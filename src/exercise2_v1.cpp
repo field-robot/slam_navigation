@@ -48,9 +48,16 @@ void setGoal()
 			if (FirstTurn =='-')break;
 			goal_y += dir*FirstRows*0.75;
 			goal_w += 3.1415;
-			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
+			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2))
 			goal_x = 0;
-			while (__abs__(goal_x-X)>0.5);
+			while (__abs__(goal_x-X)>0.5)			
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 13;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
 			loops++;
 			break;
 		case 2:
@@ -67,7 +74,14 @@ void setGoal()
 			goal_w += 3.1415;
 			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
 			goal_x = 13;
-			while (__abs__(goal_x-X)>0.5);
+			while (__abs__(goal_x-X)>0.5)
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 0;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
 			loops++;
 			break;	
 		case 3:
@@ -84,7 +98,14 @@ void setGoal()
 			goal_w += 3.1415;
 			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
 			goal_x = 0;
-			while (__abs__(goal_x-X)>0.5);
+			while (__abs__(goal_x-X)>0.5)			
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 13;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
 			loops++;
 			break;
 		case 4:
@@ -101,7 +122,14 @@ void setGoal()
 			goal_w += 3.1415;
 			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
 			goal_x = 13;
-			while (__abs__(goal_x-X)>0.5);
+			while (__abs__(goal_x-X)>0.5)
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 0;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
 			loops++;
 			break;
 		case 5:
@@ -118,7 +146,14 @@ void setGoal()
 			goal_w += 3.1415;
 			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
 			goal_x = 0;
-			while (__abs__(goal_x-X)>0.5);
+			while (__abs__(goal_x-X)>0.5)
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 13;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
 			loops++;
 			break;
 		case 6:
@@ -135,12 +170,116 @@ void setGoal()
 			goal_w += 3.1415;
 			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
 			goal_x = 13;
-			while (__abs__(goal_x-X)>0.5);
+			while (__abs__(goal_x-X)>0.5)
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 0;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
 			loops++;
 			break;
+		case 7:
+			if (SeventhTurn=='R')
+			{
+				dir = cos(W)
+			}
+			if (SeventhTurn=='L')
+			{
+				dir = -cos(W);
+			}
+			if (SeventhTurn =='-')break;
+			goal_y += dir*SeventhRows*0.75;
+			goal_w += 3.1415;
+			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
+			goal_x = 0;
+			while (__abs__(goal_x-X)>0.5)
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 13;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
+			loops++;
+			break;	
+		case 8:
+			if (EigthTurn=='R')
+			{
+				dir = cos(W)
+			}
+			if (EigthTurn=='L')
+			{
+				dir = -cos(W);
+			}
+			if (EigthTurn =='-')break;
+			goal_y += dir*EigthRows*0.75;
+			goal_w += 3.1415;
+			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
+			goal_x = 13;
+			while (__abs__(goal_x-X)>0.5)
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 0;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
+			loops++;
+			break;
+		case 9:
+			if (NinthTurn=='R')
+			{
+				dir = cos(W)
+			}
+			if (NinthTurn=='L')
+			{
+				dir = -cos(W);
+			}
+			if (NinthTurn =='-')break;
+			goal_y += dir*NinthRows*0.75;
+			goal_w += 3.1415;
+			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
+			goal_x = 0;
+			while (__abs__(goal_x-X)>0.5)
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 13;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
+			loops++;
+			break;	
+		case 10:
+			if (TenthTurn=='R')
+			{
+				dir = cos(W)
+			}
+			if (TenthTurn=='L')
+			{
+				dir = -cos(W);
+			}
+			if (TenthTurn =='-')break;
+			goal_y += dir*TenthRows*0.75;
+			goal_w += 3.1415;
+			while ((__abs__(goal_y-Y)>0.1)&&((__abs__(goal_w-W)>0.2));
+			goal_x = 13;
+			while (__abs__(goal_x-X)>0.5)
+			{
+			 if (FindObstacle())
+			 	{
+			 	goal_x = 0;
+			 	}
+			 	while (__abs__(goal_x-X)>0.5);
+			 }
+			loops++;
+			break;		
 		default: break;
 		}
 	}
+	
 }
 
 bool FindObstacle()
@@ -159,5 +298,7 @@ bool FindObstacle()
 	if (numberOccupiedCells>ObstaclePixels)
 	return true;
 }
+
+
 
 
