@@ -24,7 +24,7 @@ double dt;
 double speed_x = 0;
 double speed_x_prev = -1;
 double speed_omega = 0;
-double speed_omega = -1;
+double speed_omega_prev = -1;
 bool cornering;
 
 bool startright = true;
@@ -115,16 +115,17 @@ int main(int argc, char** argv){
 	  	speed_omega = 0;
 	  	speed_x = 0;
 	  }
-	  if (speedx != speed_x_prev | speed_omega != speed_omega_prev)
+	  if (speed_x != speed_x_prev | speed_omega != speed_omega_prev)
 	  {
 	  	geometry_msgs::Twist vel;
 	  	 vel.linear.x = speed_x;
 	 	 vel.angular.z = speed_omega;
 	 	 speed_omega_prev = speed_omega;
 	 	 speed_x_prev = speed_x;
+	 	 cmdvel.publish(vel);
 	  }
 	  
-	  cmdvel.publish(vel);
+	  
 /*
       //we'll send a goal to the robot to move 1 meter forward
       goal.target_pose.header.frame_id = "base_link";
