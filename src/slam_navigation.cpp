@@ -22,7 +22,9 @@ double Pos2;
 double distancecovered;																		//distance covered per row
 double dt;
 double speed_x = 0;
+double speed_x_prev = -1;
 double speed_omega = 0;
+double speed_omega = -1;
 bool cornering;
 
 bool startright = true;
@@ -85,7 +87,7 @@ int main(int argc, char** argv){
   while (ros::ok()) {
 		
 		current_time = ros::Time::now();
-		if (freeCell > 3000)
+		if (freeCell < 3000)
 		{
 			cornering = true;
 			angle_start = w;
@@ -99,8 +101,8 @@ int main(int argc, char** argv){
 	 		direction = 1;
 	 	}
 	 	else direction = -1;
-	 	speed_x = 1;
-	 	speed_omega = 2*direction;
+	 	speed_x = 0.5;
+	 	speed_omega = direction;
 	 	if (abs(angle_start -w)<0.3)
 	 	{
 	 		speed_omega = 0;
@@ -113,10 +115,14 @@ int main(int argc, char** argv){
 	  	speed_omega = 0;
 	  	speed_x = 0;
 	  }
-	  geometry_msgs::Twist vel;
-	  
-	  vel.linear.x = speed_x;
-	  vel.angular.z = speed_omega;
+	  if (speedx != speed_x_prev | speed_omega != speed_omega_prev)
+	  {
+	  	geometry_msgs::Twist vel;
+	  	 vel.linear.x = speed_x;
+	 	 vel.angular.z = speed_omega;
+	 	 speed_omega_prev = speed_omega;
+	 	 speed_x_prev = speed_x;
+	  }
 	  
 	  cmdvel.publish(vel);
 /*
