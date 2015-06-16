@@ -37,6 +37,7 @@ int direction_old = 0;
 int row = 1;																			 	//number of rows
 int numberFreeCells= 0;
 int freeCell = 0;
+int freeCell_prev = -1;
 double angle_start = 0;
 bool leftright = false;																		//false is linksom; true is rechtsom
 bool searchingRow;																			//boolean for start of searching
@@ -83,17 +84,22 @@ int main(int argc, char** argv){
   //}
   
   ros::Time current_time, last_time;
-  
+  if (rowcount == 1)
+		{
+			freeCell_prev = freeCell;
+		}
   while (ros::ok()) {
 		
 		current_time = ros::Time::now();
-		if (freeCell < 3000)
+		if ((freeCell-freeCell_prev) > 20)
 		{
 			cornering = true;
 			angle_start = w;
 			ROS_INFO("Free cells %i", freeCell);
 		}
-	
+	 
+	 	freeCell_prev = freeCell;
+	 
 	 while (cornering == true)
 	 {
 	 	if (rowcount%2 == 1)
