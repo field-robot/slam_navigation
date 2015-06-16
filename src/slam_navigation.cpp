@@ -62,13 +62,7 @@ void costmap_grid(const nav_msgs::OccupancyGrid &costmap)
 	ROS_INFO("NumberOfFreeCells %i",numberFreeCells);
 	freeCell = numberFreeCells;
 	numberFreeCells = 0;
-	for (int j = 40; j<45;j++)
-	{
-		if (costmap.data[i]>127)
-		{
-			maxdistancer = i;
-			}
-	}
+	
 	
 }
 
