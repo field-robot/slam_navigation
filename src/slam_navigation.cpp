@@ -7,6 +7,7 @@
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/Twist.h>
 
+
 #define WheelDiameter 0.15
 #define PI 3.1415
 
@@ -24,13 +25,17 @@ double speed_x = 0;
 double speed_omega = 0;
 bool cornering;
 
+bool startright = true;
 
+int rowcount = 1;
+int direction = 0;
+int direction_old = 0;
 
 
 int row = 1;																			 	//number of rows
 int numberFreeCells= 0;
 int freeCell = 0;
-
+double angle_start = 0;
 bool leftright = false;																		//false is linksom; true is rechtsom
 bool searchingRow;																			//boolean for start of searching
 
@@ -40,7 +45,7 @@ void odomMsgs(const nav_msgs::Odometry& odom)						//callback function for the p
 {
 	x = odom.pose.pose.position.x;	
 	y = odom.pose.pose.position.y;	
-	w = odom.pose.pose.orientation.w;
+	w = odom.pose.pose.orientation.z;
 }
 
 void costmap_grid(const nav_msgs::OccupancyGrid &costmap)
@@ -83,10 +88,31 @@ int main(int argc, char** argv){
 		if (freeCell > 3000)
 		{
 			cornering = true;
+			angle_start = w;
 			ROS_INFO("Free cells %i", freeCell);
 		}
-
-	 //while (cornering == true);
+	
+	 while (cornering == true)
+	 {
+	 	if (rowcount%2 == 1)
+	 	{
+	 		direction = 1;
+	 	}
+	 	else direction = -1;
+	 	speed_x = 1;
+	 	speed_omega = 2*direction;
+	 	if (abs(angle_start -w)<0.3)
+	 	{
+	 		speed_omega = 0;
+	 		rowcount++;
+	 		cornering= false;
+	 	}
+	  }
+	  if (rowcount == 15)
+	  {
+	  	speed_omega = 0;
+	  	speed_x = 0;
+	  }
 	  geometry_msgs::Twist vel;
 	  
 	  vel.linear.x = speed_x;
