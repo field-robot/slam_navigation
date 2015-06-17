@@ -101,22 +101,14 @@ int main(int argc, char** argv){
 	 
 	 	freeCell_prev = freeCell;
 	 
-	 while (cornering == true)
+	 if(cornering == true)
 	 {
-	 	if (rowcount%2 == 1)
-	 	{
-	 		direction = 1;
-	 	}
-	 	else direction = -1;
-	 	speed_x = 0.5;
-	 	speed_omega = direction;
-	 	if (abs(angle_start -w)<0.3)
-	 	{
-	 		speed_omega = 0;
-	 		rowcount++;
-	 		cornering= false;
-	 	}
+	 	speed_x = 0;
 	  }
+	  if ((freeCell)< 85)
+	  {
+	  	speed_x = 0.5;
+	  	}
 	  if (rowcount == 15)
 	  {
 	  	speed_omega = 0;
