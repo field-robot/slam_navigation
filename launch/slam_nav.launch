@@ -1,0 +1,5 @@
+<launch>
+	<node name="slam_navigation" pkg="slam_navigation" type="slam_navigation" output="screen">
+		 <rosparam file="$(find slam_navigation)/config/slam_nav_config.yaml" command="load" />
+	</node>
+</launch>
