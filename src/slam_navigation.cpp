@@ -27,6 +27,10 @@ double speed_omega = 0;
 double speed_omega_prev = -1;
 double _row_width_;
 
+int _turn_1;
+int _row_1;
+
+
 bool cornering;
 
 bool startright = true;
@@ -160,6 +164,7 @@ int main(int argc, char** argv){
   nh1.param("field_length", _field_length_, 13);
   nh1.param("row_width", _row_width_, 0.75);
   nh1.param("number_of_rows", _num_rows_, 20);
+
 
   //tell the action client that we want to spin a thread by default
   //MoveBaseClient ac("move_base", true);
