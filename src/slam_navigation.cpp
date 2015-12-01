@@ -54,7 +54,12 @@ double angle_start = 0;
 bool leftright = false;																		//false is linksom; true is rechtsom
 bool searchingRow;																			//boolean for start of searching
 
+uint8_t detectionMode = 0;					//1 is count rows next to the vehicle
+								//2 is detect an obstacle in the field
+								//3 is detect the end of a row
 
+bool obstacleDetected = false;
+bool rowDetected = false;
 
 void odomMsgs(const nav_msgs::Odometry& odom)						//callback function for the position of the robot
 {
@@ -65,17 +70,37 @@ void odomMsgs(const nav_msgs::Odometry& odom)						//callback function for the p
 
 void costmap_grid(const nav_msgs::OccupancyGrid &costmap)
 {
-	for (int i = 0;i<costmap.info.width*costmap.info.height;i++)
-	{
 	
-			if (costmap.data[i]==0) numberFreeCells++;
-			
+	if (detectionMode == 0){					//detect rows
+		for(int j=0;j++;j<costmap.info.height){
+			for(int i=0.5*costmap.info.width;i++;i<costmap.info.width){
+				if (costmap.data[(i)+(j*costmap.info.height)] == 0){
+					numberFreeCells++;
+				}	
+			}
+		}
+		if (numberFreeCells > _rowcells_) rowDetected = true;
 	}
-	ROS_INFO("NumberOfFreeCells %i",numberFreeCells);
+	if (detectionMode == 1){					//detect obstacle
+	int a = floor(0.25*costmap.info.width);
+		for(int j=0;j++;j<costmap.info.height){		
+			for(int i = a; i++; i < (costmap.info.width-a)){
+				if (costmap.data[(i)+(j*costmap.info.height)] == 0){
+					numberFreeCells++;
+				}
+			}		
+		}
+		if (numberFreeCells > _obstaclecells_) obstacleDetected = true;
+	}
+	if (detectionMode == 2){					//detect end of row
+		for (int i = 0;i<costmap.info.width*costmap.info.height;i++){	
+			if (costmap.data[i]==0) numberFreeCells++;			
+		}
+	}
+	ROS_INFO("NumberofFreeCells %i", numberFreeCells);
 	freeCell = numberFreeCells;
 	numberFreeCells = 0;
-	
-	
+		
 }
 
 bool Cornering();
