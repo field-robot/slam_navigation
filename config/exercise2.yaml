@@ -1,0 +1,30 @@
+Turn1   :  250
+Rows_1  :  0
+Turn2   :  1
+Rows_2  :  1
+Turn3   :  2
+Rows_3  :  3
+Turn4   :  1 
+Rows_4  :  4
+Turn5   :  251
+Rows_5  :  0
+Turn6   :  1
+Rows_6  :  5
+Turn7   :  2
+Rows_7  :  6
+Turn8   :  1
+Rows_8  :  5
+Turn9   :  2
+Rows_9  :  1
+Turn10  :  253
+Rows_10 :  0
+
+#Start = 250
+#Obstacle = 251
+#Finish = 253
+#Left Turn = 2
+#Right Turn = 1
+
+
+obstaclecells: 50
+rowcells: 50

@@ -47,6 +47,9 @@ int _num_rows_;
 int numberFreeCells= 0;
 int freeCell = 0;
 int freeCell_prev = -1;
+int _obstaclecells_;
+int _rowcells_;
+
 double angle_start = 0;
 bool leftright = false;																		//false is linksom; true is rechtsom
 bool searchingRow;																			//boolean for start of searching
@@ -164,7 +167,8 @@ int main(int argc, char** argv){
   nh1.param("field_length", _field_length_, 13);
   nh1.param("row_width", _row_width_, 0.75);
   nh1.param("number_of_rows", _num_rows_, 20);
-
+  nh1.param("obstaclecells", _obstaclecells_, 20);
+  nh1.param("rowcells", _rowcells_, 20);
 
   //tell the action client that we want to spin a thread by default
   //MoveBaseClient ac("move_base", true);
