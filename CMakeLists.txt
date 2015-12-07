@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib
   move_base_msgs
   roscpp
+  rosbag
 )
 
 ## System dependencies are found with CMake's conventions
@@ -162,4 +163,5 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 add_executable(slam_navigation src/slam_navigation.cpp)
+
 target_link_libraries(slam_navigation ${catkin_LIBRARIES})

@@ -6,6 +6,10 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/Twist.h>
+#include <rosbag/bag.h>
+#include <rosbag/view.h>
+#include <std_msgs/UInt16.h>
+#include <std_msgs/Bool.h>
 
 
 #define WheelDiameter 0.15
@@ -49,6 +53,7 @@ int freeCell = 0;
 int freeCell_prev = -1;
 int _obstaclecells_;
 int _rowcells_;
+int _dMode_;
 
 double angle_start = 0;
 bool leftright = false;																		//false is linksom; true is rechtsom
@@ -60,6 +65,20 @@ uint8_t detectionMode = 0;					//1 is count rows next to the vehicle
 
 bool obstacleDetected = false;
 bool rowDetected = false;
+  nav_msgs::Odometry odom_log;
+  std_msgs::UInt16   freecells_log;
+rosbag::Bag bag;
+
+void writeBag()
+{
+	odom_log.pose.pose.position.x = x;	
+	odom_log.pose.pose.position.y = y;	
+	odom_log.pose.pose.orientation.z = w;
+	freecells_log.data = numberFreeCells;
+	bag.write("Odometry ", ros::Time::now(), odom_log);
+	bag.write("FreeCells ", ros::Time::now(), freecells_log);
+}
+	
 
 void odomMsgs(const nav_msgs::Odometry& odom)						//callback function for the position of the robot
 {
@@ -146,6 +165,7 @@ bool End_Row()
 {
 	if (freeCell > _free_cells_){
 		ROS_INFO("End of row has been detected");
+		
 		if(row<(_num_rows_-1)){
 		Cornering();
 		}
@@ -167,7 +187,7 @@ void sendGoal(double goal_x, double goal_y, double goal_w)
       goal.target_pose.pose.position.y = goal_y;
       goal.target_pose.pose.orientation.w = goal_w;
 
-     ROS_INFO("Sending goal");
+     /*ROS_INFO("Sending goal");
       ac.sendGoal(goal);
 
       ac.waitForResult();
@@ -176,9 +196,19 @@ void sendGoal(double goal_x, double goal_y, double goal_w)
       ROS_INFO("Succesfully reached the goal");
      else
        ROS_INFO("Did not reach the goal. Your robot is fucked up");
-
+	*/
 }
-
+bool status = false;
+void Exit(const std_msgs::UInt16 &state)
+{
+	
+	
+	if (state.data == 0)	{
+		status=true;
+		ROS_INFO("Exit has been detected");
+	}	
+	else status = false;
+}
 //typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
 int main(int argc, char** argv){
@@ -187,19 +217,25 @@ int main(int argc, char** argv){
   ros::NodeHandle nh1("~"); 				//subscribing to a private parameter server
   ros::Subscriber sub = nh.subscribe("odom", 1, &odomMsgs);				//subscribed to odometry msg
   ros::Subscriber local_costmap = nh.subscribe("/move_base/local_costmap/costmap",1,&costmap_grid);
- 
+  ros::Subscriber exit= nh.subscribe("exit", 1, &Exit);
   nh1.param("free_cells_", _free_cells_,80);
   nh1.param("field_length", _field_length_, 13);
   nh1.param("row_width", _row_width_, 0.75);
   nh1.param("number_of_rows", _num_rows_, 20);
   nh1.param("obstaclecells", _obstaclecells_, 20);
   nh1.param("rowcells", _rowcells_, 20);
+  nh1.param("detection_mode", _dMode_, 1);
 
   //tell the action client that we want to spin a thread by default
   //MoveBaseClient ac("move_base", true);
   
   ros::Rate loop_rate(10);
+  
 
+
+
+  bag.open("test_bag.bag", rosbag::bagmode::Write);
+  ROS_INFO("Bag is opened");
   //wait for the action server to come up
     
 	
@@ -209,8 +245,20 @@ int main(int argc, char** argv){
   while (ros::ok()) {
 		
 		current_time = ros::Time::now();
-		while(!End_Row());
-	   
+		if (_dMode_ == 1){
+			detectionMode= 2;
+			//while(!End_Row());
+		}
+		
+		if (status == false){
+			ROS_INFO("Writing bag");
+			writeBag();
+		}
+		if (status == true){
+			bag.close();
+			ROS_INFO("Closing bag");
+		}
+	   	
 	  
 	 	 dt = (current_time-last_time).toSec();
 	  	last_time = current_time;
@@ -219,4 +267,5 @@ int main(int argc, char** argv){
 	  	ros::spinOnce();
      
   }
+	
 }

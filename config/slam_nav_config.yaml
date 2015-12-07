@@ -2,3 +2,4 @@ free_cells: 85
 field_length: 3
 row_width: 0.75
 number_of_rows: 3
+detection_mode: 1
