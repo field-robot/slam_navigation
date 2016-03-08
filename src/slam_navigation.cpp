@@ -91,20 +91,20 @@ void costmap_grid(const nav_msgs::OccupancyGrid &costmap)
 {
 	
 	if (detectionMode == 0){					//detect rows
-		for(int j=0;j++;j<costmap.info.height){
-			for(int i=0.5*costmap.info.width;i++;i<costmap.info.width){
-				if (costmap.data[(i)+(j*costmap.info.height)] == 0){
+		for(int j=0;j++;j<costmap.info.height){							//creating a for loop which knows the height of the costmap
+			for(int i=0.5*costmap.info.width;i++;i<costmap.info.width){	//creating a second for loop which knows the width of the costmamp
+				if (costmap.data[(i)+(j*costmap.info.height)] == 0){	//checking for empty cells
 					numberFreeCells++;
 				}	
 			}
 		}
-		if (numberFreeCells > _rowcells_) rowDetected = true;
+		if (numberFreeCells > _rowcells_) rowDetected = true;			
 	}
 	if (detectionMode == 1){					//detect obstacle
-	int a = floor(0.25*costmap.info.width);
+	int a = floor(0.25*costmap.info.width);		//searching a narrow strip in front of the robot
 		for(int j=0;j++;j<costmap.info.height){		
 			for(int i = a; i++; i < (costmap.info.width-a)){
-				if (costmap.data[(i)+(j*costmap.info.height)] == 0){
+				if (costmap.data[(i)+(j*costmap.info.height)] == 0){		//checking for empty cells
 					numberFreeCells++;
 				}
 			}		
@@ -112,8 +112,8 @@ void costmap_grid(const nav_msgs::OccupancyGrid &costmap)
 		if (numberFreeCells > _obstaclecells_) obstacleDetected = true;
 	}
 	if (detectionMode == 2){					//detect end of row
-		for (int i = 0;i<costmap.info.width*costmap.info.height;i++){	
-			if (costmap.data[i]==0) numberFreeCells++;			
+		for (int i = 0;i<costmap.info.width*costmap.info.height;i++){	//checking all available cells
+			if (costmap.data[i]==0) numberFreeCells++;					//checking for empty cells	
 		}
 	}
 	ROS_INFO("NumberofFreeCells %i", numberFreeCells);
@@ -121,7 +121,7 @@ void costmap_grid(const nav_msgs::OccupancyGrid &costmap)
 	numberFreeCells = 0;
 		
 }
-
+//declaring functions
 bool Cornering();
 bool Begin_Row();
 bool Next_Goal();
@@ -131,42 +131,42 @@ void sendGoal(double goal_x, double goal_y, double goal_w);
 
 bool Cornering()
 {
-		goal_y += _row_width_;
-		goal_x = x;
-		goal_w += PI;
-		sendGoal(goal_x, goal_y ,goal_w);
-		while (!Begin_Row());
-		return true;
+		goal_y += _row_width_;					//adding row_width to the current goal
+		goal_x = x;								//making sure that the x_goal stays the current x position
+		goal_w += PI;							//adding pi to the current rotational goal
+		sendGoal(goal_x, goal_y ,goal_w);		// sending the goal to the move_base pkg
+		while (!Begin_Row());					//waiting untill the beginning of a row is detected
+		return true;							// returning a true
 }
 
 bool Begin_Row()
 {
-	if (freeCell < _free_cells_){		
+	if (freeCell < _free_cells_){						//checking if the begin of a row is detected
 		ROS_INFO("Begin of row has been detected");
-		Next_Goal();
-		row++;
+		Next_Goal();									//starting the next goal procedure
+		row++;											//adding a row to the count
 		return true;
 		}		
 }
 			
 bool Next_Goal()
 {
-	if (sin(w)>0){
-		goal_x = _field_length_;
+	if (sin(w)>0){										//check the rotation
+		goal_x = _field_length_;						// set a new x goal
 		}
-	if (sin(w)<0){
-		goal_x = 0;
+	if (sin(w)<0){										//check the rotation
+		goal_x = 0;										//set a new x goal
 		}
-	sendGoal(goal_x, goal_y ,goal_w);
+	sendGoal(goal_x, goal_y ,goal_w);					//send a new goal
 	return true;
 }
 
 bool End_Row()
 {
-	if (freeCell > _free_cells_){
+	if (freeCell > _free_cells_){						//check if the end of the row is reached
 		ROS_INFO("End of row has been detected");
 		
-		if(row<(_num_rows_-1)){
+		if(row<(_num_rows_-1)){							// start cornering procedure
 		Cornering();
 		}
 	}
@@ -174,7 +174,7 @@ bool End_Row()
 
 
 
-void sendGoal(double goal_x, double goal_y, double goal_w)
+void sendGoal(double goal_x, double goal_y, double goal_w)	//sending a goal to the movebaseclient
 {
       
 	typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
@@ -183,9 +183,9 @@ void sendGoal(double goal_x, double goal_y, double goal_w)
       goal.target_pose.header.frame_id = "base_link";
       goal.target_pose.header.stamp = ros::Time::now();
 
-      goal.target_pose.pose.position.x = goal_x;
-      goal.target_pose.pose.position.y = goal_y;
-      goal.target_pose.pose.orientation.w = goal_w;
+      goal.target_pose.pose.position.x = goal_x;			//adding x_goal in the message
+      goal.target_pose.pose.position.y = goal_y;			//adding y_goal in the message
+      goal.target_pose.pose.orientation.w = goal_w;			//adding w_goal in the message
 
      /*ROS_INFO("Sending goal");
       ac.sendGoal(goal);
